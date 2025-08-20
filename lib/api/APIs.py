@@ -10,5 +10,8 @@ class APIs(basePageApi):
     # Se valida si existe una instancia de la clase, si no existe la crea
 
     def get_ml_departments(self, url, params=None):
-        return self.API_GET(url, params)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+        }
+        return self.API_GET(url, params, headers=headers)
 
