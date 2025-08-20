@@ -37,29 +37,30 @@ def before_scenario(context, scenario):
         chrome_profile.add_argument('--ignore-certificate-errors')
         chrome_profile.add_argument("--disable-application-cache")
         chrome_profile.add_argument('--lang=es')
-        chrome_profile.add_experimental_option('prefs', {'intl.accept_languages': 'es_ES',
-                                                         'profile.managed_default_content_settings.images': 2})
         chrome_profile.add_argument("--start-maximized")
         chrome_profile.add_argument("--disable-features=VizDisplayCompositor")
+        chrome_profile.add_argument("--log-level=3")
+        chrome_profile.add_argument("--disable-logging")
 
         # Si el modo headless es TRUE se agrega esta config
         if headless:
             chrome_profile.add_argument("--headless")
-            chrome_profile.add_argument("--disable-gpu")  # Recomendado para ciertas configuraciones gráficas
+            chrome_profile.add_argument("--disable-gpu")
             chrome_profile.add_argument("--window-size=1920,1080")
 
         # Configuramos e inicializamos el Chrome Driver
         chrome_path = ChromeDriverManager().install()
         context.driver = webdriver.Chrome(service=webdriver.chrome.service.Service(chrome_path),
-                                        options=chrome_profile)
+                                                options=chrome_profile)
+        # Informamos la version de Chrome Driver instalada
+        chrome_driver_version = chrome_path.split('\\')[-2]
+        print(f"Versión de ChromeDriver instalada: {chrome_driver_version}")
 
     # Setiamos las configuraciones del Firefox Profile para el Driver en caso que se quiera usar este
     elif context.config.userdata["NAVEGADOR"] == "FIREFOX":
         firefox_profile = FirefoxOptions()
-        firefox_profile.add_argument('--incognito')  # Private mode
+        firefox_profile.add_argument('--incognito')
         firefox_profile.add_argument('--ignore-certificate-errors')
-        firefox_profile.set_preference('intl.accept_languages', 'es-ES')  # Idioma en español
-        firefox_profile.set_preference('permissions.default.image', 2)  # No cargar imágenes
         firefox_profile.add_argument("--start-maximized")
 
         # Si el modo headless es TRUE se agrega esta config
@@ -128,8 +129,7 @@ def before_all(context):
 
 def after_step(context,step):
     if step.status=='failed':
-        # Almacenamos temporalmente la captura de pantalla y lo leemos para disponibilizarlo en Reportes de , al ultimo
-        # limpiamos el archivo
+        # Almacenamos temporalmente la captura de pantalla y lo leemos para disponibilizarlo en Reporte de Allure
         screenshot_path = "temp_failed_step.png"
         if hasattr(context, "driver"):  # Asegúrate de que `context.driver` sea un objeto Selenium WebDriver
             context.driver.save_screenshot(screenshot_path)

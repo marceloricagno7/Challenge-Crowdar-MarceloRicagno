@@ -12,9 +12,9 @@ class basePageApi():
             cls._intance = object.__new__(cls)
         return cls._intance
 
-    def API_GET(self, url, params):
+    def API_GET(self, url, params, headers):
         try:
-            response = requests.get(url=url, params=params, timeout=10)
+            response = requests.get(url=url, params=params, headers=headers, timeout=10)
             result_json = json.loads(response.text)
             return result_json
         except Exception as error:
