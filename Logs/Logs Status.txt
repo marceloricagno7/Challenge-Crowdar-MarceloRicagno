@@ -1,0 +1,5 @@
+TABLE>          NOMBRE TC                                                                      PASS   FAIL
+SCENARIO>  Consulta en API disponibilidad de Departamentos                                      1      0
+SCENARIO>  Inicio sesion Fallido con username incorrecto y clave correcta                        0      1
+SCENARIO>  Agregar al carrito desde la ficha de detalle del producto                             1      0
+RESULTS>  TC PASADOS: 2    TC FALLADOS: 1    TC TOTALES: 3
